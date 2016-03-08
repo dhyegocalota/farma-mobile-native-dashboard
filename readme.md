@@ -1,9 +1,6 @@
-# <img src="media/Icon.png" width="45" align="left">Farma Mobile Dashboard
+# Farma Mobile Dashboard
 
 > Official Farma Mobile dashboard app
-
-<br>
-[![](media/screenshot.png)](https://github.com/farma-mobile/farma-mobile-dashboard-native/releases/latest)
 
 *OS X 10.9+, Windows 7+ & Linux are supported.*
 
