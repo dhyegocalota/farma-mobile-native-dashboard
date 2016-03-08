@@ -1,6 +1,5 @@
 'use strict';
 const ipc = require('electron').ipcRenderer;
-const storage = require('remote').require('./storage');
 
 ipc.on('show-notifications', () => {
 	document.querySelector('button.toolbar-button').click();
