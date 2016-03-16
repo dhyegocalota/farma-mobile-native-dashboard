@@ -5,16 +5,7 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const shell = electron.shell;
 const appName = app.getName();
-
-function sendAction(action) {
-	const win = BrowserWindow.getAllWindows()[0];
-
-	if (process.platform === 'darwin') {
-		win.restore();
-	}
-
-	win.webContents.send(action);
-}
+const utils = require('./utils');
 
 const darwinTpl = [
 	{
@@ -28,9 +19,9 @@ const darwinTpl = [
 				type: 'separator'
 			},
 			{
-				label: 'Deslogar',
+				label: 'Desconectar',
 				click() {
-					sendAction('log-out');
+					utils.sendAction('log-out');
 				}
 			},
 			{
@@ -77,7 +68,7 @@ const darwinTpl = [
 				label: 'Ver Notificações',
 				accelerator: 'CmdOrCtrl+N',
 				click() {
-					sendAction('show-notifications');
+					utils.sendAction('show-notifications');
 				}
 			}
 		]
@@ -168,16 +159,16 @@ const linuxTpl = [
 				label: 'Ver Notificações',
 				accelerator: 'CmdOrCtrl+N',
 				click() {
-					sendAction('show-notifications');
+					utils.sendAction('show-notifications');
 				}
 			},
 			{
 				type: 'separator'
 			},
 			{
-				label: 'Deslogar',
+				label: 'Desconectar',
 				click() {
-					sendAction('log-out');
+					utils.sendAction('log-out');
 				}
 			},
 			{

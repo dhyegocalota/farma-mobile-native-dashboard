@@ -6,15 +6,78 @@ const app = electron.app;
 const appMenu = require('./menu');
 const storage = require('./storage');
 const createTray = require('./tray');
+const utils = require('./utils');
 
 require('electron-debug')();
 require('electron-dl')();
 
 let mainWindow;
+let appTray;
 let isQuitting = false;
 
+function updateBadge(title) {
+	if (!app.dock) {
+		return;
+	}
+
+	let messageCountMatcher = (/^\(([0-9]+)\)/).exec(title);
+	app.messageCount = +(messageCountMatcher ? messageCountMatcher[1] : 0);
+	setBadgeCounter(app.messageCount);
+
+	if (appTray) {
+		if (app.messageCount > 0) {
+	    appTray.setImage(path.join(__dirname, 'media', utils.ICONS.trayNew[process.platform]));
+	  } else {
+	    appTray.setImage(path.join(__dirname, 'media', utils.ICONS.tray[process.platform]));
+	  }
+	}
+}
+
+function setBadgeCounter(count) {
+	var text = (count > 0) ? count.toString() : '';
+
+	if (process.platform === 'darwin') {
+		app.dock.setBadge(text);
+	} else if (process.platform === 'win32') {
+		var win = remote.getCurrentWindow();
+
+    if (text === '') {
+      win.setOverlayIcon(null, '');
+      return;
+    }
+
+    // Create badge
+    var canvas = document.createElement('canvas');
+    canvas.height = 140;
+    canvas.width = 140;
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'red';
+    ctx.beginPath();
+    ctx.ellipse(70, 70, 70, 70, 0, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'white';
+
+    if (text.length > 2) {
+      ctx.font = '75px sans-serif';
+      ctx.fillText(text, 70, 98);
+    } else if (text.length > 1) {
+      ctx.font = '100px sans-serif';
+      ctx.fillText(text, 70, 105);
+    } else {
+      ctx.font = '125px sans-serif';
+      ctx.fillText(text, 70, 112);
+    }
+
+    var badgeDataURL = canvas.toDataURL();
+    var img = NativeImage.createFromDataUrl(badgeDataURL);
+
+    win.setOverlayIcon(img, text);
+	}
+}
+
 function createMainWindow() {
-	const lastWindowState = storage.get('lastWindowState') || {width: 1000, height: 700};
+	const lastWindowState = storage.get('lastWindowState') || {width: 1200, height: 900};
 
 	const win = new electron.BrowserWindow({
 		title: app.getName(),
@@ -51,13 +114,15 @@ function createMainWindow() {
 		}
 	});
 
+	win.on('page-title-updated', (e, title) => updateBadge(title));
+
 	return win;
 }
 
 app.on('ready', () => {
 	electron.Menu.setApplicationMenu(appMenu);
 	mainWindow = createMainWindow();
-	createTray(mainWindow);
+	appTray = createTray(mainWindow);
 
 	const page = mainWindow.webContents;
 
