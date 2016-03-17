@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const electron = require('electron');
 const app = electron.app;
+const nativeImage = electron.nativeImage;
 const appMenu = require('./menu');
 const storage = require('./storage');
 const createTray = require('./tray');
@@ -25,11 +26,9 @@ function updateBadge(title) {
 	setBadgeCounter(app.messageCount);
 
 	if (appTray) {
-		if (app.messageCount > 0) {
-	    appTray.setImage(path.join(__dirname, 'media', utils.ICONS.trayNew[process.platform]));
-	  } else {
-	    appTray.setImage(path.join(__dirname, 'media', utils.ICONS.tray[process.platform]));
-	  }
+		let trayImgs = (app.messageCount > 0) ? utils.ICONS.trayNew : utils.ICONS.tray;
+		let trayImgPath = path.join(__dirname, 'media', trayImgs[process.platform]);
+		appTray.setImage(nativeImage.createFromPath(trayImgPath));
 	}
 }
 
@@ -70,7 +69,7 @@ function setBadgeCounter(count) {
     }
 
     var badgeDataURL = canvas.toDataURL();
-    var img = NativeImage.createFromDataUrl(badgeDataURL);
+    var img = nativeImage.createFromDataUrl(badgeDataURL);
 
     win.setOverlayIcon(img, text);
 	}
