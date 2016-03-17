@@ -10,7 +10,7 @@ const ICONS = {
 		darwin: 'IconTray-white.png'
 	},
 	trayNew: {
-		win32: 'IconTray-new.png',
+		win32: 'IconTray-new.ico',
 		linux: 'IconTray-new.png',
 		darwin: 'IconTray-blue.png'
 	}
