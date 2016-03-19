@@ -6,14 +6,13 @@ const app = electron.app;
 const nativeImage = electron.nativeImage;
 const appMenu = require('./menu');
 const storage = require('./storage');
-const createTray = require('./tray');
+const tray = require('./tray');
 const utils = require('./utils');
 
 require('electron-debug')();
 require('electron-dl')();
 
 let mainWindow;
-let appTray;
 let isQuitting = false;
 
 function updateBadge(title) {
@@ -25,11 +24,10 @@ function updateBadge(title) {
 	app.messageCount = +(messageCountMatcher ? messageCountMatcher[1] : 0);
 	setBadgeCounter(app.messageCount);
 
-	if (appTray) {
-		let trayImgs = (app.messageCount > 0) ? utils.ICONS.trayNew : utils.ICONS.tray;
-		let trayImgPath = path.join(__dirname, 'media', trayImgs[process.platform]);
-		appTray.setImage(nativeImage.createFromPath(trayImgPath));
-	}
+	// Update tray icon
+	let trayImgs = (app.messageCount > 0) ? utils.ICONS.trayNew : utils.ICONS.tray;
+	let trayImgPath = path.join(__dirname, 'media', trayImgs[process.platform]);
+	tray.setImage(nativeImage.createFromPath(trayImgPath));
 }
 
 function setBadgeCounter(count) {
@@ -121,7 +119,7 @@ function createMainWindow() {
 app.on('ready', () => {
 	electron.Menu.setApplicationMenu(appMenu);
 	mainWindow = createMainWindow();
-	appTray = createTray(mainWindow);
+tray.create(mainWindow);
 
 	const page = mainWindow.webContents;
 
