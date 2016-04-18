@@ -33,6 +33,7 @@
     "dashboard"
   ],
   "dependencies": {
+    "auto-launch": "^2.0.1",
     "electron-debug": "^0.5.0",
     "electron-dl": "^0.2.0"
   },
