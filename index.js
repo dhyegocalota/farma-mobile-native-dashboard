@@ -8,24 +8,9 @@ const appMenu = require('./menu');
 const storage = require('./storage');
 const tray = require('./tray');
 const utils = require('./utils');
-const AutoLaunch = require('auto-launch');
 
 require('electron-debug')();
 require('electron-dl')();
-
-const appLauncher = new AutoLaunch({
-	name: 'Farma Mobile'
-});
-
-appLauncher.isEnabled()
-	.then(function(enabled){
-		if (enabled) {
-			return;
-		}
-
-		return appLauncher.enable();
-	})
-	.then(console.log);
 
 let mainWindow;
 let isQuitting = false;
@@ -134,7 +119,7 @@ function createMainWindow() {
 app.on('ready', () => {
 	electron.Menu.setApplicationMenu(appMenu);
 	mainWindow = createMainWindow();
-tray.create(mainWindow);
+	tray.create(mainWindow);
 
 	const page = mainWindow.webContents;
 

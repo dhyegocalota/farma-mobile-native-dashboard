@@ -13,7 +13,7 @@
   "electronVersion": "0.36.9",
   "scripts": {
     "test": "xo",
-    "start": "electron .",
+    "start": "electron . --debug=5858",
     "build": "npm run build-osx && npm run build-linux && npm run build-windows",
     "build-osx": "electron-packager . \"$npm_package_productName\" --overwrite --out=dist --ignore='^/dist$' --prune --platform=darwin --arch=x64 --icon=media/Icon.icns --app-bundle-id=com.farmamobile.dashboard --sign='Developer ID Application: DVDI Desenvolvimento e Tecnologia de Software LTDA - ME (YMZCY2A2FF)' --app-version=$npm_package_version --version=$npm_package_electronVersion && cd \"dist/Farma Mobile-darwin-x64\" && zip -ryXq9 ../Farma-mobile-dashboard-osx-${npm_package_version}.zip \"Farma Mobile.app\"",
     "build-linux": "electron-packager . \"$npm_package_productName\" --overwrite --out=dist --ignore='^/dist$' --prune --platform=linux --arch=x64 --app-bundle-id=com.farmamobile.dashboard --app-version=$npm_package_version --version=$npm_package_electronVersion && cd \"dist/Farma Mobile-linux-x64/\" && zip -ryq9 ../Farma-mobile-dashboard-linux-\"$npm_package_version\".zip *",
@@ -34,8 +34,9 @@
   ],
   "dependencies": {
     "auto-launch": "^2.0.1",
-    "electron-debug": "^0.5.0",
-    "electron-dl": "^0.2.0"
+    "electron-debug": "^0.5.2",
+    "electron-dl": "^0.2.0",
+    "traverse": "^0.6.6"
   },
   "devDependencies": {
     "electron-packager": "^5.1.0",
