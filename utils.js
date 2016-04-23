@@ -30,6 +30,6 @@ function sendAction(action) {
 }
 
 module.exports = {
-  sendAction,
+	sendAction,
 	ICONS
 };

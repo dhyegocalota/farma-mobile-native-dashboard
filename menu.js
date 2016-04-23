@@ -269,12 +269,12 @@ const getMenuTemplate = (platform) => {
 			label: 'Reportar um Erro...',
 			click() {
 				const body = `
-	**Seja o mais detalhista possível ao descrever o erro.**
+				**Seja o mais detalhista possível ao descrever o erro.**
 
-	-
+				-
 
-	${app.getName()} ${app.getVersion()}
-	${platform} ${process.arch} ${os.release()}`;
+				${app.getName()} ${app.getVersion()}
+				${platform} ${process.arch} ${os.release()}`;
 
 				shell.openExternal(`mailto:contato@farmamobile.com.br?body=${encodeURIComponent(body)}`);
 			}
@@ -300,11 +300,11 @@ let menu = electron.Menu.buildFromTemplate(getMenuTemplate(process.platform));
 let autoInitializer = findMenuItemById(menu, 'auto-initializer');
 
 appLauncher.isEnabled()
-	.then((enabled) => {
-		autoInitializer.checked = enabled;
-	})
-	.catch(() => {
-		disableMenuItem(autoInitializer);
-	});
+.then((enabled) => {
+	autoInitializer.checked = enabled;
+})
+.catch(() => {
+	disableMenuItem(autoInitializer);
+});
 
 module.exports = menu;

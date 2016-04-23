@@ -19,4 +19,3 @@ exports.set = (key, val) => {
 };
 
 exports.get = key => readData()[key];
-
