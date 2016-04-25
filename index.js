@@ -2,18 +2,39 @@
 const path = require('path');
 const fs = require('fs');
 const electron = require('electron');
+const isOnline = require('is-online');
 const app = electron.app;
 const nativeImage = electron.nativeImage;
 const appMenu = require('./menu');
 const storage = require('./storage');
 const tray = require('./tray');
 const utils = require('./utils');
+const mainUrl = 'http://painel.farmamobile.com.br/';
 
 require('electron-debug')();
 require('electron-dl')();
 
 let mainWindow;
 let isQuitting = false;
+
+function waitOnline(cb, interval) {
+	interval = +(interval || 500);
+
+	const checkConnection = () => {
+		console.log('Checking connection...');
+		isOnline((err, online) => {
+			if (online) {
+				console.log('Connection is online.');
+				cb();
+			} else {
+				console.log(`Connection is offline. Retrying in ${interval}ms...`);
+				setTimeout(checkConnection, interval);
+			}
+		});
+	};
+
+	checkConnection();
+}
 
 function updateBadge(title) {
 	if (!app.dock) {
@@ -97,7 +118,7 @@ function createMainWindow() {
 		}
 	});
 
-	win.loadURL('http://painel.farmamobile.com.br/');
+	win.loadURL(mainUrl);
 
 	win.on('close', e => {
 		if (!isQuitting) {
@@ -117,6 +138,8 @@ function createMainWindow() {
 }
 
 app.on('ready', () => {
+	let loadOnce = false;
+
 	electron.Menu.setApplicationMenu(appMenu);
 	mainWindow = createMainWindow();
 	tray.create(mainWindow);
@@ -131,6 +154,12 @@ app.on('ready', () => {
 	page.on('new-window', (e, url) => {
 		e.preventDefault();
 		electron.shell.openExternal(url);
+	});
+
+	page.on('did-fail-load', (e, errorCode, errorDescription, targetUrl, isMainFrame) => {
+		if (targetUrl === mainUrl) {
+			waitOnline(() => mainWindow.reload());
+		}
 	});
 });
 
