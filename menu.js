@@ -300,11 +300,11 @@ let menu = electron.Menu.buildFromTemplate(getMenuTemplate(process.platform));
 let autoInitializer = findMenuItemById(menu, 'auto-initializer');
 
 appLauncher.isEnabled()
-.then((enabled) => {
-	autoInitializer.checked = enabled;
-})
-.catch(() => {
-	disableMenuItem(autoInitializer);
-});
+	.then((enabled) => {
+		autoInitializer.checked = enabled;
+	})
+	.catch(() => {
+		disableMenuItem(autoInitializer);
+	});
 
 module.exports = menu;
