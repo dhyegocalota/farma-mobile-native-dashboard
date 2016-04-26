@@ -1,10 +1,10 @@
 {
-  "name": "farma-mobile-dashboard-native",
+  "name": "farma-mobile-native-dashboard",
   "productName": "Farma Mobile",
   "version": "1.0.0",
   "description": "Official Farma Mobile dashboard app",
   "license": "MIT",
-  "repository": "farma-mobile/farma-mobile-dashboard-native",
+  "repository": "farma-mobile/farma-mobile-native-dashboard",
   "author": {
     "name": "Dhyego Fernando",
     "email": "dhyegofernando@gmail.com",

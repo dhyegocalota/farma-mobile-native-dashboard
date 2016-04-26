@@ -8,11 +8,11 @@
 
 ### OS X
 
-[**Download**](https://github.com/farma-mobile/farma-mobile-dashboard-native/releases/latest), unzip, and move `Farma Mobile.app` to the `/Applications` directory.
+[**Download**](https://github.com/farma-mobile/farma-mobile-native-dashboard/releases/latest), unzip, and move `Farma Mobile.app` to the `/Applications` directory.
 
 ### Linux
 
-[**Download**](https://github.com/farma-mobile/farma-mobile-dashboard-native/releases/latest) and unzip to some location.
+[**Download**](https://github.com/farma-mobile/farma-mobile-native-dashboard/releases/latest) and unzip to some location.
 
 To add a shortcut to the app, create a file in `~/.local/share/applications` called `farma-mobile.desktop` with the following contents:
 
@@ -27,7 +27,7 @@ Icon=/full/path/to/folder/Farma\ Mobile/resources/app/media/Icon.png
 
 ### Windows
 
-[**Download**](https://github.com/farma-mobile/farma-mobile-dashboard-native/releases/latest) and unzip to some location.
+[**Download**](https://github.com/farma-mobile/farma-mobile-native-dashboard/releases/latest) and unzip to some location.
 
 
 ## Dev
