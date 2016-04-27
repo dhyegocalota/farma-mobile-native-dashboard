@@ -39,6 +39,7 @@ const getMenuTemplate = (platform) => {
 		id: 'auto-initializer',
 		label: 'Abrir ao inicializar',
 		type: 'checkbox',
+		enabled: false,
 		click() {
 			let autoInitializer = findMenuItemById(menu, 'auto-initializer');
 			let changePromise;
@@ -49,9 +50,10 @@ const getMenuTemplate = (platform) => {
 				changePromise = appLauncher.disable();
 			}
 
-			changePromise.catch(() => {
-				disableMenuItem(autoInitializer);
-			});
+			changePromise
+				.catch(() => {
+					disableMenuItem(autoInitializer);
+				});
 		}
 	};
 
@@ -301,6 +303,7 @@ let autoInitializer = findMenuItemById(menu, 'auto-initializer');
 
 appLauncher.isEnabled()
 	.then((enabled) => {
+		autoInitializer.enabled = true;
 		autoInitializer.checked = enabled;
 	})
 	.catch(() => {
