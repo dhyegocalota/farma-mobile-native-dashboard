@@ -57,7 +57,32 @@ const getMenuTemplate = (platform) => {
 		}
 	};
 
-	const darwinTpl = [
+	const helpMenuTemplate = [
+		{
+			label: `Website ${appName}`,
+			click() {
+				shell.openExternal('http://farmamobile.com.br');
+			}
+		},
+		{
+			label: 'Reportar um Erro',
+			click() {
+				// Unfortunately we can't let it right indented
+				// because the special characters (\t \s) will
+				// be shown in e-mail body
+				const body = `**Seja o mais detalhista possível ao descrever o erro.**
+
+-
+
+${app.getName()} ${app.getVersion()}
+${platform} ${process.arch} ${os.release()}`;
+
+				shell.openExternal(`mailto:contato@farmamobile.com.br?body=${encodeURIComponent(body)}`);
+			}
+		}
+	];
+
+	const darwinTemplate = [
 		{
 			label: appName,
 			submenu: [
@@ -167,6 +192,13 @@ const getMenuTemplate = (platform) => {
 			role: 'window',
 			submenu: [
 				{
+					label: 'Recarregar',
+					accelerator: 'CmdOrCtrl+R',
+					click() {
+						utils.sendAction('reload');
+					}
+				},
+				{
 					label: 'Minimizar',
 					accelerator: 'CmdOrCtrl+M',
 					role: 'minimize'
@@ -198,11 +230,12 @@ const getMenuTemplate = (platform) => {
 		},
 		{
 			label: 'Ajuda',
-			role: 'help'
+			role: 'help',
+			submenu: helpMenuTemplate
 		}
 	];
 
-	const linuxTpl = [
+	const commonTemplate = [
 		{
 			label: 'Arquivo',
 			submenu: [
@@ -255,45 +288,25 @@ const getMenuTemplate = (platform) => {
 			]
 		},
 		{
-			label: 'Ajuda',
-			role: 'help'
-		}
-	];
-
-	const helpSubmenu = [
-		{
-			label: `Website ${appName}...`,
-			click() {
-				shell.openExternal('http://farmamobile.com.br');
-			}
+			label: 'Janela',
+			submenu: [
+				{
+					label: 'Recarregar',
+					accelerator: 'CmdOrCtrl+R',
+					click() {
+						utils.sendAction('reload');
+					}
+				}
+			]
 		},
 		{
-			label: 'Reportar um Erro...',
-			click() {
-				const body = `
-				**Seja o mais detalhista possível ao descrever o erro.**
-
-				-
-
-				${app.getName()} ${app.getVersion()}
-				${platform} ${process.arch} ${os.release()}`;
-
-				shell.openExternal(`mailto:contato@farmamobile.com.br?body=${encodeURIComponent(body)}`);
-			}
+			label: 'Ajuda',
+			role: 'help',
+			submenu: helpMenuTemplate
 		}
 	];
 
-	let tpl;
-
-	if (platform === 'darwin') {
-		tpl = darwinTpl;
-	} else {
-		tpl = linuxTpl;
-	}
-
-	tpl[tpl.length - 1].submenu = helpSubmenu;
-
-	return tpl;
+	return (platform === 'darwin') ? darwinTemplate : commonTemplate;
 };
 
 let menu = electron.Menu.buildFromTemplate(getMenuTemplate(process.platform));

@@ -1,6 +1,10 @@
 'use strict';
 const ipc = require('electron').ipcRenderer;
 
+ipc.on('reload', () => {
+	window.location.reload();
+});
+
 ipc.on('show-notifications', () => {
 	document.querySelector('button.toolbar-button').click();
 });
