@@ -107,7 +107,6 @@ function createMainWindow() {
 		icon: process.platform === 'linux' && path.join(__dirname, 'media', 'Icon.png'),
 		minWidth: 800,
 		minHeight: 600,
-		titleBarStyle: 'hidden-inset',
 		webPreferences: {
 			// fails without this because of CommonJS script detection
 			nodeIntegration: false,
